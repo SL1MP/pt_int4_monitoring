@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 15s  # Интервал сбора метрик
+
+scrape_configs:
+  - job_name: 'blackbox'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]  # Модуль для проверки
+    static_configs:
+      - targets:
+        - https://ptsecurity.com
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - target_label: __address__
+        replacement: blackbox-exporter:9115  # Адрес Blackbox Exporter
